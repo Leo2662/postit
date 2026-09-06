@@ -8,22 +8,23 @@ Mur d'idées ultra minimaliste. Une page, deux couleurs.
 
 Projet : **carte-lum**.
 
-1. Ouvrir le **SQL Editor** du projet et exécuter [`supabase/schema.sql`](supabase/schema.sql).
-   Cela crée la table `posts` (`id`, `content`, `likes`, `created_at`), les policies
-   publiques (pas d'auth pour le MVP) et la fonction `like_post`.
-2. Récupérer l'URL du projet dans **Settings → Data API → Project URL**.
+Project ref : `uixcoavsqsfxsmwqyvky` → URL `https://uixcoavsqsfxsmwqyvky.supabase.co`.
+
+Ouvrir le **SQL Editor** du projet et exécuter [`supabase/schema.sql`](supabase/schema.sql).
+Cela crée la table `posts` (`id`, `content`, `likes`, `created_at`), les policies
+publiques (pas d'auth pour le MVP) et la fonction `like_post`.
 
 ## 2. Lancer en local
 
 ```bash
-cp .env.example .env.local   # puis renseigner NEXT_PUBLIC_SUPABASE_URL
+cp .env.example .env.local
 npm install
 npm run dev
 ```
 
 | Variable | Valeur |
 | --- | --- |
-| `NEXT_PUBLIC_SUPABASE_URL` | `https://<project-ref>.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://uixcoavsqsfxsmwqyvky.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | la publishable key du projet |
 
 La *secret key* n'est pas utilisée : l'app parle directement à Supabase depuis le
@@ -32,5 +33,13 @@ ajoutée au dépôt ni à Vercel.
 
 ## 3. Déployer sur Vercel
 
-Importer le dépôt GitHub sur Vercel, ajouter les deux variables ci-dessus dans
-**Settings → Environment Variables**, déployer. Aucune autre configuration.
+1. [vercel.com/new](https://vercel.com/new) → **Import** le dépôt `Leo2662/postit`.
+2. Vercel détecte Next.js seul : ne rien changer aux réglages de build.
+3. **Environment Variables** : ajouter les deux variables ci-dessus, cochées pour
+   Production, Preview et Development.
+4. **Deploy**.
+
+La branche par défaut du dépôt devient la Production ; chaque push crée un
+déploiement. Si les variables sont ajoutées après un déploiement, il faut
+redéployer (Deployments → ⋯ → Redeploy) pour qu'elles soient prises en compte :
+elles sont inlinées au moment du build.
