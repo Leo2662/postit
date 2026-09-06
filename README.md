@@ -16,7 +16,8 @@ Cela crée :
 
 - `posts` (`id`, `content`, `likes`, `created_at`) et la fonction `like_post` ;
 - `comments` (`id`, `post_id`, `content`, `created_at`), en `on delete cascade`
-  sur `posts` — supprimer un post-it supprime ses commentaires ;
+  sur `posts` — supprimer un post-it supprime ses commentaires, et chaque
+  commentaire est supprimable individuellement ;
 - les policies publiques (pas d'auth pour le MVP).
 
 Le fichier est idempotent : le rejouer après une première installation ne casse

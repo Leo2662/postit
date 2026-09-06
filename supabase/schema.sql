@@ -49,6 +49,8 @@ alter table public.comments enable row level security;
 
 drop policy if exists "comments_select_public" on public.comments;
 drop policy if exists "comments_insert_public" on public.comments;
+drop policy if exists "comments_delete_public" on public.comments;
 
 create policy "comments_select_public" on public.comments for select using (true);
 create policy "comments_insert_public" on public.comments for insert with check (true);
+create policy "comments_delete_public" on public.comments for delete using (true);

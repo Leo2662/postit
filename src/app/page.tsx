@@ -72,6 +72,14 @@ export default function Home() {
     }
   }
 
+  async function deleteComment(id: string) {
+    const removed = comments.find((c) => c.id === id);
+    setComments((current) => current.filter((c) => c.id !== id));
+
+    const { error } = await supabase.from("comments").delete().eq("id", id);
+    if (error && removed) setComments((current) => [...current, removed]);
+  }
+
   async function addComment(postId: string, text: string) {
     const comment: Comment = {
       id: crypto.randomUUID(),
@@ -117,6 +125,7 @@ export default function Home() {
             onCancelDelete={() => setPendingDelete(null)}
             onDelete={() => deletePost(post.id)}
             onComment={(text) => addComment(post.id, text)}
+            onDeleteComment={deleteComment}
           />
         ))}
       </ul>
@@ -133,6 +142,7 @@ type PostCardProps = {
   onCancelDelete: () => void;
   onDelete: () => void;
   onComment: (text: string) => void;
+  onDeleteComment: (id: string) => void;
 };
 
 function PostCard({
@@ -144,8 +154,11 @@ function PostCard({
   onCancelDelete,
   onDelete,
   onComment,
+  onDeleteComment,
 }: PostCardProps) {
   const [draft, setDraft] = useState("");
+  const [open, setOpen] = useState(false);
+  const [confirmingComment, setConfirmingComment] = useState<string | null>(null);
 
   function submitComment(event: FormEvent) {
     event.preventDefault();
@@ -161,32 +174,81 @@ function PostCard({
         {post.content}
       </p>
 
-      <div className="border-t border-cream-dark px-6 py-4">
-        {comments.length > 0 && (
-          <ul className="mb-3 space-y-2">
-            {comments.map((comment) => (
-              <li
-                key={comment.id}
-                className="border-l-2 border-cream-dark pl-3 text-sm leading-relaxed break-words whitespace-pre-wrap text-medium-brown"
-              >
-                {comment.content}
-              </li>
-            ))}
-          </ul>
-        )}
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        className="font-display flex w-full items-center justify-between border-t border-cream-dark px-6 py-3 text-sm font-bold text-terracotta transition-colors duration-200 hover:bg-cream"
+      >
+        {comments.length === 0
+          ? "Commenter"
+          : `${comments.length} commentaire${comments.length > 1 ? "s" : ""}`}
+        <Chevron open={open} />
+      </button>
 
-        <form onSubmit={submitComment}>
-          <input
-            value={draft}
-            onChange={(event) => setDraft(event.target.value)}
-            placeholder="Commenter…"
-            aria-label={`Commenter : ${post.content}`}
-            enterKeyHint="send"
-            autoComplete="off"
-            className="w-full rounded-full border border-cream-dark bg-cream px-4 py-2 text-sm text-dark-brown outline-none transition-colors duration-200 placeholder:text-warm-gray focus:border-terracotta"
-          />
-        </form>
-      </div>
+      {open && (
+        <div className="animate-fade-in border-t border-cream-dark px-6 py-4">
+          {comments.length > 0 && (
+            <ul className="mb-3 space-y-2">
+              {comments.map((comment) => (
+                <li
+                  key={comment.id}
+                  className="flex items-start justify-between gap-2 border-l-2 border-cream-dark pl-3 text-sm leading-relaxed text-medium-brown"
+                >
+                  {confirmingComment === comment.id ? (
+                    <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                      Supprimer&nbsp;?
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setConfirmingComment(null);
+                          onDeleteComment(comment.id);
+                        }}
+                        className="font-display font-extrabold text-terracotta uppercase hover:underline"
+                      >
+                        Oui
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setConfirmingComment(null)}
+                        className="font-display font-extrabold text-warm-gray uppercase hover:underline"
+                      >
+                        Non
+                      </button>
+                    </span>
+                  ) : (
+                    <>
+                      <span className="break-words whitespace-pre-wrap">
+                        {comment.content}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setConfirmingComment(comment.id)}
+                        aria-label={`Supprimer le commentaire : ${comment.content}`}
+                        className="shrink-0 px-1 text-base leading-none text-warm-gray transition-colors duration-200 hover:text-terracotta"
+                      >
+                        &times;
+                      </button>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <form onSubmit={submitComment}>
+            <input
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              placeholder="Commenter…"
+              aria-label={`Commenter : ${post.content}`}
+              enterKeyHint="send"
+              autoComplete="off"
+              className="w-full rounded-full border border-cream-dark bg-cream px-4 py-2 text-sm text-dark-brown outline-none transition-colors duration-200 placeholder:text-warm-gray focus:border-terracotta"
+            />
+          </form>
+        </div>
+      )}
 
       <div className="mt-auto flex items-center justify-between bg-terracotta px-5 py-4">
         <button
@@ -233,6 +295,23 @@ function PostCard({
         </div>
       )}
     </li>
+  );
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+      aria-hidden
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
   );
 }
 
