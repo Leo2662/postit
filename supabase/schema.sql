@@ -33,3 +33,22 @@ as $$
 $$;
 
 grant execute on function public.like_post(uuid) to anon, authenticated;
+
+-- Commentaires attachés à un post-it.
+create table if not exists public.comments (
+  id         uuid primary key default gen_random_uuid(),
+  post_id    uuid not null references public.posts (id) on delete cascade,
+  content    text not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists comments_post_idx
+  on public.comments (post_id, created_at);
+
+alter table public.comments enable row level security;
+
+drop policy if exists "comments_select_public" on public.comments;
+drop policy if exists "comments_insert_public" on public.comments;
+
+create policy "comments_select_public" on public.comments for select using (true);
+create policy "comments_insert_public" on public.comments for insert with check (true);

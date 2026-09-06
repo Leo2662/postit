@@ -12,8 +12,15 @@ Projet : **carte-lum**.
 Project ref : `uixcoavsqsfxsmwqyvky` → URL `https://uixcoavsqsfxsmwqyvky.supabase.co`.
 
 Ouvrir le **SQL Editor** du projet et exécuter [`supabase/schema.sql`](supabase/schema.sql).
-Cela crée la table `posts` (`id`, `content`, `likes`, `created_at`), les policies
-publiques (pas d'auth pour le MVP) et la fonction `like_post`.
+Cela crée :
+
+- `posts` (`id`, `content`, `likes`, `created_at`) et la fonction `like_post` ;
+- `comments` (`id`, `post_id`, `content`, `created_at`), en `on delete cascade`
+  sur `posts` — supprimer un post-it supprime ses commentaires ;
+- les policies publiques (pas d'auth pour le MVP).
+
+Le fichier est idempotent : le rejouer après une première installation ne casse
+rien et ajoute la table `comments` si elle manque.
 
 ## 2. Lancer en local
 

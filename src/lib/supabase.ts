@@ -16,6 +16,13 @@ export type Post = {
   created_at: string;
 };
 
+export type Comment = {
+  id: string;
+  post_id: string;
+  content: string;
+  created_at: string;
+};
+
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 /** Likes décroissants, puis les plus récents d'abord. */
@@ -23,4 +30,11 @@ export function sortPosts(posts: Post[]): Post[] {
   return [...posts].sort(
     (a, b) => b.likes - a.likes || b.created_at.localeCompare(a.created_at),
   );
+}
+
+/** Commentaires du post, du plus ancien au plus récent. */
+export function commentsOf(comments: Comment[], postId: string): Comment[] {
+  return comments
+    .filter((comment) => comment.post_id === postId)
+    .sort((a, b) => a.created_at.localeCompare(b.created_at));
 }
