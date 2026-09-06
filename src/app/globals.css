@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  /* Deux couleurs, aucune autre. */
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+
+  --font-sans: var(--font-condensed), "Arial Narrow", "Helvetica Neue", sans-serif;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.18s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pop-in {
+    animation: none;
+  }
+}
