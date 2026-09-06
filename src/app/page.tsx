@@ -56,12 +56,12 @@ export default function Home() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-4 pb-20 pt-8 sm:px-6">
-      <h1 className="text-3xl font-bold uppercase tracking-tight sm:text-4xl">
-        Idées Lum
+    <main className="mx-auto w-full max-w-[1200px] px-6 pb-20 pt-10">
+      <h1 className="font-display text-3xl font-black tracking-[0.05em] text-terracotta uppercase sm:text-4xl">
+        Idées LÜM
       </h1>
 
-      <form onSubmit={addPost} className="mt-4">
+      <form onSubmit={addPost} className="mt-6">
         <input
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
@@ -69,26 +69,26 @@ export default function Home() {
           aria-label="Nouvelle idée"
           enterKeyHint="done"
           autoComplete="off"
-          className="w-full border-b-4 border-paper bg-transparent py-3 text-2xl font-semibold text-paper outline-none placeholder:text-paper/40 focus:border-paper sm:text-3xl"
+          className="w-full rounded-full border-2 border-cream-dark bg-white px-6 py-4 text-lg text-dark-brown shadow-[0_4px_20px_rgba(44,24,16,0.08)] outline-none transition-colors duration-200 placeholder:text-warm-gray focus:border-terracotta"
         />
       </form>
 
-      <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <ul className="mt-10 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <li
             key={post.id}
-            className="animate-pop-in relative flex min-h-40 flex-col justify-between bg-paper p-4 text-ink"
+            className="animate-fade-up relative flex min-h-48 flex-col overflow-hidden rounded-[20px] bg-white shadow-[0_4px_20px_rgba(44,24,16,0.12)] transition duration-250 hover:-translate-y-1 hover:shadow-[0_10px_32px_rgba(44,24,16,0.2)]"
           >
-            <p className="text-xl font-semibold break-words whitespace-pre-wrap sm:text-2xl">
+            <p className="flex-1 p-6 text-lg leading-relaxed break-words whitespace-pre-wrap text-dark-brown">
               {post.content}
             </p>
 
-            <div className="mt-4 flex items-center justify-between">
+            <div className="flex items-center justify-between bg-terracotta px-5 py-4">
               <button
                 type="button"
                 onClick={() => likePost(post.id)}
                 aria-label="Liker"
-                className="flex items-center gap-2 text-xl font-bold active:scale-95"
+                className="font-display flex items-center gap-2 rounded-full border-[2.5px] border-white px-5 py-1.5 text-sm font-extrabold tracking-[0.08em] text-white transition-colors duration-200 hover:bg-white hover:text-terracotta"
               >
                 <ThumbUp />
                 {post.likes}
@@ -98,29 +98,29 @@ export default function Home() {
                 type="button"
                 onClick={() => setPendingDelete(post.id)}
                 aria-label="Supprimer"
-                className="px-2 text-3xl leading-none font-bold active:scale-95"
+                className="px-2 text-2xl leading-none text-white transition-opacity duration-200 hover:opacity-60"
               >
                 &times;
               </button>
             </div>
 
             {pendingDelete === post.id && (
-              <div className="animate-pop-in absolute inset-0 flex flex-col items-center justify-center gap-4 bg-paper p-4 text-center text-ink">
-                <p className="text-xl font-semibold">
+              <div className="animate-fade-in absolute inset-0 flex flex-col items-center justify-center gap-5 bg-cream p-6 text-center">
+                <p className="font-display text-lg font-extrabold text-dark-brown">
                   Êtes-vous sûr de vouloir supprimer ?
                 </p>
                 <div className="flex gap-3">
                   <button
                     type="button"
                     onClick={() => deletePost(post.id)}
-                    className="border-2 border-ink bg-ink px-5 py-1 text-lg font-bold text-paper uppercase active:scale-95"
+                    className="font-display rounded-full border-[2.5px] border-terracotta bg-terracotta px-6 py-1.5 text-sm font-extrabold tracking-[0.08em] text-white uppercase transition-colors duration-200 hover:bg-terracotta-dark hover:border-terracotta-dark"
                   >
                     Oui
                   </button>
                   <button
                     type="button"
                     onClick={() => setPendingDelete(null)}
-                    className="border-2 border-ink px-5 py-1 text-lg font-bold uppercase active:scale-95"
+                    className="font-display rounded-full border-[2.5px] border-terracotta px-6 py-1.5 text-sm font-extrabold tracking-[0.08em] text-terracotta uppercase transition-colors duration-200 hover:bg-terracotta hover:text-white"
                   >
                     Non
                   </button>
@@ -134,10 +134,9 @@ export default function Home() {
   );
 }
 
-/** Pouce monochrome : la palette reste strictement à deux couleurs. */
 function ThumbUp() {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
       <path d="M2 10h4v11H2zM21.5 10.5h-6l1-4.2A2.1 2.1 0 0 0 14.4 3.7L13 3 8.6 9.4c-.2.3-.3.6-.3 1V19c0 1.1.9 2 2 2h8.2c.9 0 1.7-.6 1.9-1.5l1.6-6.5c.3-1.2-.6-2.5-1.9-2.5z" />
     </svg>
   );

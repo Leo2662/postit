@@ -1,6 +1,7 @@
-# Idées Lum
+# Idées LÜM
 
-Mur d'idées ultra minimaliste. Une page, deux couleurs.
+Mur d'idées une page, mobile-first, à la charte LÜM Vieux-Lille
+(terracotta `#8B4A2B` sur crème `#F5EFE6`, Nunito / Lato, cartes arrondies).
 
 **Stack** — Next.js · TypeScript · Tailwind CSS · Supabase · Vercel
 

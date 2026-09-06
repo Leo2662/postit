@@ -1,33 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  /* Deux couleurs, aucune autre. */
-  --color-ink: #000000;
-  --color-paper: #ffffff;
+  /* Charte LÜM Vieux-Lille */
+  --color-terracotta: #8b4a2b;
+  --color-terracotta-dark: #6b3520;
+  --color-terracotta-light: #c4714a;
+  --color-cream: #f5efe6;
+  --color-cream-dark: #ede4d8;
+  --color-dark-brown: #2c1810;
+  --color-medium-brown: #5c3d2e;
+  --color-warm-gray: #9e8b7d;
 
-  --font-sans: var(--font-condensed), "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-display: var(--font-nunito), sans-serif;
+  --font-body: var(--font-lato), sans-serif;
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-paper);
-  font-family: var(--font-sans);
+  background: var(--color-cream);
+  color: var(--color-medium-brown);
+  font-family: var(--font-body);
   -webkit-tap-highlight-color: transparent;
 }
 
 ::selection {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-terracotta);
+  color: #fff;
 }
 
-@keyframes pop-in {
+@keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -35,12 +42,27 @@ body {
   }
 }
 
-.animate-pop-in {
-  animation: pop-in 0.18s ease-out both;
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Court et opaque : une confirmation ne doit pas laisser voir la carte dessous. */
+.animate-fade-in {
+  animation: fade-in 0.15s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-pop-in {
+  .animate-fade-up,
+  .animate-fade-in {
     animation: none;
   }
 }
